@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css';
 import {FavoriteListItem}  from 'types/interface';
-import defaultProfileImage from 'assets/iamge/default-profile-image.png'
+import defaultProfileImage from 'assets/image/default-profile-image.png'
 
 interface Props {
     favoriteListItem : FavoriteListItem

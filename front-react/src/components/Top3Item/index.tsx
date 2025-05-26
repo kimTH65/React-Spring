@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css';
-import defaultProfileImage from 'assets/iamge/default-profile-image.png'
+import defaultProfileImage from 'assets/image/default-profile-image.png'
 import {BoardListItem}  from 'types/interface';
 
 interface Props {
