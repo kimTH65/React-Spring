@@ -10,13 +10,14 @@ import commentListMock from 'mocks/comment-list.mock';
 import favoriteListMock from 'mocks/favorite-list.mock';
 import FavofiteItem from 'components/FavoriteItem';
 import InputBox from 'components/InputBox';
+import Footer from 'layouts/Footer';
 
 function App() {
-  const [value,setValue]= useState<string>('');
+  //const [value,setValue]= useState<string>('');
 
   return (
     <>
-    <InputBox label='email' type={'text'} value={value} placeholder={'enter the email address'} setValue={setValue} error={true}/>
+    <Footer/>
     </>
   );
 }
