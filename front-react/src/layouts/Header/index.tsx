@@ -43,8 +43,6 @@ export default function Header() {
       searchButtonRef.current?.click();
     };
 
-    
-
     if (!status) 
     return(
       <div className='icon-button' onClick={onSearchButtonClickHandler}>

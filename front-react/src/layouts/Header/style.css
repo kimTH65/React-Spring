@@ -9,7 +9,7 @@
     width: 1200px;
 
     display: flex;
-    justify-direction: space-between;
+    justify-content: space-between;
     align-items: center;
 }
 

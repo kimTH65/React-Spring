@@ -1,16 +1,5 @@
 import React,{useState} from 'react';
 import './App.css';
-import BoardItem from 'components/BoardItem';
-import latestBoardListMock from 'mocks/latest-board-list.mock';
-import top3BoardList from 'mocks/top-3-board-list.mock';
-import top3BoardListMock from 'mocks/top-3-board-list.mock';
-import Top3Item from 'components/Top3Item';
-import CommentItem from 'components/CommentItem';
-import commentListMock from 'mocks/comment-list.mock';
-import favoriteListMock from 'mocks/favorite-list.mock';
-import FavofiteItem from 'components/FavoriteItem';
-import InputBox from 'components/InputBox';
-import Footer from 'layouts/Footer';
 import { Route, Routes } from 'react-router-dom';
 import Main from 'views/Main';
 import Authentication from 'views/Authentication';
@@ -34,9 +23,9 @@ function App() {
         <Route path={AUTH_PATH()}  element={<Authentication/>}/>
         <Route path={SEARCH_PATH(':searchWord')}  element={<Search/>}/>
         <Route path={USER_PATH(':userEmail')}  element={<User/>}/>
-        <Route path={BOARD_PATH()}  element={<Main/>}>
-          <Route path={BOARD_DETAIL_PATH(':boardNumber')}  element={<BoardWrite/>}/>
+        <Route path={BOARD_PATH()} >
           <Route path={BOARD_WRITE_PATH()}  element={<BaordDetail/>}/>
+          <Route path={BOARD_DETAIL_PATH(':boardNumber')}  element={<BoardWrite/>}/>
           <Route path={BOARD_UPDATE_PATH(':boardNumber')}  element={<BoardUpdate/>}/>
         </Route>
       </Route>
