@@ -20,3 +20,5 @@ Basic Authentication : ID/PW로 Base64로 인코딩후 Authorization 헤더에 �
 OAuth : 토큰 인증,사용자가 직접 증명 x 미리 인증받아서 토큰 발급, 토큰을 이용해서 API를 요청하는 방식 OAuth 2.0 
 <br><br>
 API Key / Session Based Authentication
+<br><br>
+Zustand란?
