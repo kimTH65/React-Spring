@@ -1,10 +1,14 @@
 import React, { ChangeEvent, useRef, useState, KeyboardEvent, useEffect } from 'react'
 import './style.css'
 import { useNavigate, useParams } from 'react-router-dom'
-import { MAIN_PATH, SEARCH_PATH } from 'constant';
+import { MAIN_PATH, SEARCH_PATH, USER_PATH, AUTH_PATH } from 'constant';
+import { useCookies } from 'react-cookie';
 
 export default function Header() {
+  const [cookies, setCookie] = useCookies();
+  const [isLogin,setLogin] = useState<boolean>(false);
   const navigate = useNavigate();
+
 
   const onLogoClickHandler = () => {
     navigate(MAIN_PATH());
@@ -57,7 +61,26 @@ export default function Header() {
         </div>
       </div>
     );
-  }
+  };
+
+  const LoginMyPageButton = () =>{
+    // MyPageButton
+    const onMyPageButtonClickHandler = () => {
+      navigate(USER_PATH(''));
+    };
+    // LoginButton
+    const onSignInButtonClickHandler = () => {
+      navigate(AUTH_PATH());
+    };
+
+    if (isLogin) {
+      return <div className='white-button'>{'MyPage'}</div>;
+    }
+    else{
+      return <div className='black-button'>{'Login'}</div>
+    }
+  };
+
   return(
     <div id='header'>
       <div className='header-container'>
@@ -69,6 +92,7 @@ export default function Header() {
         </div>
         <div className='header-right-box'>
           <SearchButton/>  
+          <LoginMyPageButton/>
         </div> 
       </div>
     </div>
