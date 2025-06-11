@@ -3,8 +3,11 @@ import './style.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MAIN_PATH, SEARCH_PATH, USER_PATH, AUTH_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
+import { useLoginUserStore } from 'stores';
 
 export default function Header() {
+
+  const {loginUser,setLoginUser,resetLoginUser} = useLoginUserStore();
   const [cookies, setCookie] = useCookies();
   const [isLogin,setLogin] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -63,9 +66,14 @@ export default function Header() {
     );
   };
 
-  const LoginMyPageButton = () =>{
+  const MyPageButton = () =>{
+
+    const{userEmail} = useParams();
+
     // MyPageButton
     const onMyPageButtonClickHandler = () => {
+      if (!loginUser) return ;
+      const {email} = loginUser;
       navigate(USER_PATH(''));
     };
     // LoginButton
@@ -73,12 +81,21 @@ export default function Header() {
       navigate(AUTH_PATH());
     };
 
+    // LogoutButton
+    const onSignOutButtonClickHandler = () => {
+      resetLoginUser();
+      navigate(MAIN_PATH());
+    };
+    if (isLogin && userEmail === loginUser?.email){
+      return <div className='black-button'>{'Logout'}</div>
+    }
     if (isLogin) {
       return <div className='white-button'>{'MyPage'}</div>;
     }
     else{
       return <div className='black-button'>{'Login'}</div>
     }
+    
   };
 
   return(
@@ -92,7 +109,7 @@ export default function Header() {
         </div>
         <div className='header-right-box'>
           <SearchButton/>  
-          <LoginMyPageButton/>
+          <MyPageButton/>
         </div> 
       </div>
     </div>
