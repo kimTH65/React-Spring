@@ -3,6 +3,6 @@ import './style.css'
 
 export default function BaordDetail() {
   return (
-    <div>BaordDetail</div>
+    <div>BoardDetail</div>
   )
 }

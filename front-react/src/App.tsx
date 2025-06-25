@@ -26,8 +26,8 @@ function App() {
           <Route path={SEARCH_PATH(':searchWord')}  element={<Search/>}/>
           <Route path={USER_PATH(':userEmail')}  element={<User/>}/>
           <Route path={BOARD_PATH()} >
-            <Route path={BOARD_WRITE_PATH()}  element={<BaordDetail/>}/>
-            <Route path={BOARD_DETAIL_PATH(':boardNumber')}  element={<BoardWrite/>}/>
+            <Route path={BOARD_WRITE_PATH()}  element={<BoardWrite/>}/>
+            <Route path={BOARD_DETAIL_PATH(':boardNumber')}  element={<BaordDetail/>}/>
             <Route path={BOARD_UPDATE_PATH(':boardNumber')}  element={<BoardUpdate/>}/>
           </Route>
         </Route>
