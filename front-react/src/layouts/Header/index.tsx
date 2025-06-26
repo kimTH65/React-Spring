@@ -117,6 +117,7 @@ export default function Header() {
     }
     return <div className='disable-button'>{'Upload'}</div>
   };
+  
   useEffect(() =>{
     const isAuthPage = pathname.startsWith(AUTH_PATH());
     setAuthPage(isAuthPage);
@@ -132,8 +133,8 @@ export default function Header() {
     setBoardUpdatePage(isBoardUpdatePage);
     const isUserPage = pathname.startsWith(USER_PATH(''));
     setUserPage(isUserPage);
-
   },[pathname]);
+
   return(
     <div id='header'>
       <div className='header-container'>
