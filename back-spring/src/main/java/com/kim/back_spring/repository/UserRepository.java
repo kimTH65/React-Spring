@@ -8,4 +8,7 @@ import com.kim.back_spring.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
+    boolean existsByEmail(String email);
+    boolean existsByNickname(String emanickname);
+    boolean existsByTelNumber(String telNumber);
 }

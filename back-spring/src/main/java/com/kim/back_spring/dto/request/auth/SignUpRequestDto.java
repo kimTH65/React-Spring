@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SignUpReauestDto {
+public class SignUpRequestDto {
     
     @NotBlank @Email
     private String email;
