@@ -97,13 +97,13 @@ export default function Header() {
       navigate(MAIN_PATH());
     };
     if (isLogin && userEmail === loginUser?.email){
-      return <div className='black-button'>{'Logout'}</div>
+      return <div className='white-button' onClick={onSignOutButtonClickHandler}>{'Logout'}</div>
     }
     if (isLogin) {
-      return <div className='white-button'>{'MyPage'}</div>;
+      return <div className='white-button' onClick={onMyPageButtonClickHandler}>{'MyPage'}</div>;
     }
     else{
-      return <div className='black-button'>{'Login'}</div>
+      return <div className='black-button' onClick={onSignInButtonClickHandler}>{'Login'}</div>
     }
   };
 
