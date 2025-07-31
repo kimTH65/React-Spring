@@ -37,6 +37,9 @@ export default function Authentication() {
       const onSignInButtonClickHandler = () => {
 
       }
+      const onSignUpLinkClickHandler = () => {
+        setView('sign-up');
+      }
       const onEmailKeyDownHandler = (event : KeyboardEvent<HTMLInputElement>) => {
         if (event.key !=='Enter')return;
         if (!passwordRef.current)return;
@@ -58,14 +61,16 @@ export default function Authentication() {
               <InputBox ref={passwordRef} label='Password' type={passwordType} placeholder='Please enter your password.' error={error} value={password} setValue={setPassword} icon={passwordButtonIcon} onButtonClick={onPasswordButtonClickHandler} onKeyDown={onPasswordKeyDownHandler}/>
             </div>
             <div className='auth-card-bottom'>
+              {error &&
               <div className='auth-sign-in-error-box'>
                 <div className='auth-sign-in-error-message'>
                   {'The email address or password you entered is incorrect.\nPlease check your input and try again.'}
                 </div>
               </div>
+              }
               <div className='black-large-full-button' onClick={onSignInButtonClickHandler}>{'Login'}</div>
               <div className='auth-description-box'>
-                <div className='auth-description'>{'New user?'}<span className='auth-description-link'>{'Sign up here'}</span></div>
+                <div className='auth-description'>{'New user? '}<span className='auth-description-link' onClick={onSignUpLinkClickHandler}>{' Sign up here'}</span></div>
               </div>
             </div>
           </div>
