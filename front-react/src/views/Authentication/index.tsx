@@ -1,15 +1,26 @@
-import React, { useState,KeyboardEvent, useRef } from 'react'
+import React, { useState,KeyboardEvent, useRef, ChangeEvent } from 'react'
 import './style.css'
 import InputBox from 'components/InputBox';
+import { signInRequest } from 'apis';
+import { SignInRequestDto } from 'apis/request/auth';
+import { SignInResponseDto } from 'apis/response/auth';
+import { ResponseDto } from 'apis/response';
+import { useCookies } from 'react-cookie';
+import { MAIN_PATH } from 'constant';
+import { useNavigate } from 'react-router-dom';
 
 export default function Authentication() {
 
     const [view, setView] = useState<'sign-in' | 'sign-up'>('sign-in');
     
+    const [cookies, setCookie] = useCookies();
+
     const SignInCard = () => {
       const emailRef = useRef<HTMLInputElement | null>(null);
 
       const passwordRef = useRef<HTMLInputElement | null>(null);
+
+      const navigator = useNavigate();
       // state: email
       const [email, setEmail] = useState<string>('');
 
@@ -34,9 +45,39 @@ export default function Authentication() {
           setPasswordButtonIcon('eye-light-on-icon')
         }
       } 
-      const onSignInButtonClickHandler = () => {
 
+      const signInResponse = (responseBody: SignInResponseDto | ResponseDto | null) =>{
+        if(!responseBody){
+          alert('netwark error');
+          return;
+        }
+        const {code} = responseBody;
+        if (code === 'DBE') alert('DB Error');
+        if (code === 'SF' || code === 'VF') setError(true);
+        if (code !== 'SU') return;
+
+        const {token,expirationTime} = responseBody as SignInResponseDto;
+        const now = new Date().getTime();
+        const expires = new Date(now + expirationTime * 1000);
+
+        setCookie('accessToken', token , {expires, path: MAIN_PATH()});
+        navigator(MAIN_PATH());
       }
+      const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setError(false);
+        const {value} = event.target;
+        setEmail(value);
+      }
+      const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setError(false);
+        const {value} = event.target;
+        setPassword(value);
+      }
+      const onSignInButtonClickHandler = () => {
+        const requestBody: SignInRequestDto = {email,password};
+        signInRequest(requestBody).then(signInResponse);
+      }
+
       const onSignUpLinkClickHandler = () => {
         setView('sign-up');
       }
@@ -57,8 +98,8 @@ export default function Authentication() {
               <div className='auth-card-title-box'>
                 <div className='auth-card-title'>{'Login'}</div>
               </div>
-              <InputBox ref={emailRef} label='Email Address' type='text' placeholder='Please enter your email address.' error={error} value={email} setValue={setEmail} onKeyDown={onEmailKeyDownHandler}/>
-              <InputBox ref={passwordRef} label='Password' type={passwordType} placeholder='Please enter your password.' error={error} value={password} setValue={setPassword} icon={passwordButtonIcon} onButtonClick={onPasswordButtonClickHandler} onKeyDown={onPasswordKeyDownHandler}/>
+              <InputBox ref={emailRef} label='Email Address' type='text' placeholder='Please enter your email address.' error={error} value={email} onChange={onEmailChangeHandler} onKeyDown={onEmailKeyDownHandler}/>
+              <InputBox ref={passwordRef} label='Password' type={passwordType} placeholder='Please enter your password.' error={error} value={password} onChange={onPasswordChangeHandler} icon={passwordButtonIcon} onButtonClick={onPasswordButtonClickHandler} onKeyDown={onPasswordKeyDownHandler}/>
             </div>
             <div className='auth-card-bottom'>
               {error &&

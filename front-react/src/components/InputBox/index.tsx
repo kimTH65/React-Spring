@@ -6,7 +6,7 @@ interface Props {
     type: 'text' | 'password';
     value: string;
     placeholder: string;
-    setValue: React.Dispatch<React.SetStateAction<string>>;
+    onChange: (event : ChangeEvent<HTMLInputElement>) => void;
     error: boolean;
 
     icon?: 'eye-light-off-icon' | 'eye-light-on-icon' | 'expand-right-light-icon';
@@ -20,13 +20,8 @@ interface Props {
 
 const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
 
-    const{label,type,placeholder,value,error} = props;
-    const{setValue,onButtonClick,icon,message,onKeyDown} = props;
-
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        const {value} = event.target;
-        setValue(value);
-    }
+    const{label,type,placeholder,value,error,icon,message} = props;
+    const{onChange,onButtonClick,onKeyDown} = props;
 
     const onKeyDownHanlder = (event: KeyboardEvent<HTMLInputElement>) =>{
         if(!onKeyDown) return;
@@ -37,7 +32,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         <div className='inputbox'>
             <div className='inputbox-label'>{label}</div>
             <div className={error ? 'inputbox-container-error' : 'inputbox-container'}>
-                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChangeHandler} onKeyDown={onKeyDownHanlder}/>
+                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChange} onKeyDown={onKeyDownHanlder}/>
                 {onButtonClick !== undefined && (
                     <div className='icon-button' onClick={onButtonClick}>
                         {icon !== undefined && (<div className ={`icon ${icon}`}></div>)}
