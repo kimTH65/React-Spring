@@ -1,9 +1,11 @@
 package com.kim.back_spring.config;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,9 +27,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-@Configurable //aspectJ에서 지원하는 어노테이션으로 스프링에서 무시하는 기능
-@EnableWebSecurity //모든 인증되지 않은 요청을 허락한다는 의미
-@RequiredArgsConstructor //Lombok으로 스프링에서 DI(의존성 주입)의 방법 중에 생성자 주입을 임의의 코드없이 자동으로 설정해주는 어노테이션
+@Configuration // Spring 설정 클래스로 등록됨
+@EnableWebSecurity // Spring Security 기능 활성화
+@RequiredArgsConstructor // final 필드 자동 생성자 주입 (Lombok)
 public class WebSecurityConfig {
     
     private final JwtAuthenticationFilter JwtAuthenticationFilter;
@@ -56,9 +58,11 @@ public class WebSecurityConfig {
     protected CorsConfigurationSource corsConfigrationSource(){
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedMethod("*");
-        configuration.addExposedHeader("*");
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:3000")); // React 개발 서버
+        configuration.addAllowedMethod("*");   // 모든 HTTP 메서드 허용
+        configuration.addAllowedHeader("*");   // 모든 요청 헤더 허용
+        configuration.addExposedHeader("*");   // 응답 헤더 노출
+        configuration.setAllowCredentials(true); // 인증정보(쿠키, 토큰) 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
