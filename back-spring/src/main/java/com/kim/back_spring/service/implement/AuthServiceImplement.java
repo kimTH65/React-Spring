@@ -79,6 +79,6 @@ public class AuthServiceImplement implements AuthService{
             return ResponseDto.databaseError();
         }
 
-        return SignInResponseDto.databaseError();
+        return SignInResponseDto.success(token);
     }
 }
