@@ -1,13 +1,14 @@
 import React, { useState,KeyboardEvent, useRef, ChangeEvent } from 'react'
 import './style.css'
 import InputBox from 'components/InputBox';
-import { signInRequest } from 'apis';
-import { SignInRequestDto } from 'apis/request/auth';
-import { SignInResponseDto } from 'apis/response/auth';
+import { signInRequest, signUpRequest } from 'apis';
+import { SignInRequestDto, SignUpRequestDto } from 'apis/request/auth';
+import { SignInResponseDto, SignUpResponseDto } from 'apis/response/auth';
 import { ResponseDto } from 'apis/response';
 import { useCookies } from 'react-cookie';
 import { MAIN_PATH } from 'constant';
 import { useNavigate } from 'react-router-dom';
+import { text } from 'stream/consumers';
 
 export default function Authentication() {
 
@@ -120,10 +121,145 @@ export default function Authentication() {
     };
 
     const SignUpCard = () => {
-        return(
-            <div className='auth-card'></div>
-        );
-    }
+      const [page, setPage] = useState<1 | 2>(1);
+
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [passwordCheck, setPasswordCheck] = useState('');
+      const [nickname, setNickname] = useState('');
+      const [telNumber, setTelNumber] = useState('');
+      const [address, setAddress] = useState('');
+      const [addressDetail, setAddressDetail] = useState('');
+      const [agreedPersonal, setAgreedPersonal] = useState(false);
+      const [error, setError] = useState('');
+
+      const navigator = useNavigate();
+
+      const onNextClick = () => {
+        if (!email || !password || !passwordCheck || !nickname) {
+          setError('Please fill all fields.');
+          return;
+        }
+        if (password !== passwordCheck) {
+          setError('Passwords do not match.');
+          return;
+        }
+        setPage(2);
+        setError('');
+      };
+
+      const onNextButtonClick = () => {
+        if (!email || !password || !passwordCheck) {
+          setError('Please fill all fields.');
+          return;
+        }
+        if (password !== passwordCheck) {
+          setError('Passwords do not match.');
+          return;
+        }
+        setPage(2);
+      };
+
+    const onBackButtonClick = () => {
+      setPage(1);
+    };
+
+    const onSignUpButtonClick = () => {
+      if (!nickname) {
+        setError('Please enter your nickname.');
+        return;
+      }
+
+      const requestBody: SignUpRequestDto = {
+        email,
+        password,
+        nickname,
+        telNumber,
+        address,
+        addressDetail,
+        agreedPersonal
+      };
+      signUpRequest(requestBody).then((responseBody: SignUpResponseDto | ResponseDto | null) => {
+        if (!responseBody) {
+          alert('Network error');
+          return;
+        }
+        const { code } = responseBody;
+        if (code === 'DBE') alert('DB Error');
+        if (code === 'VF') setError('Invalid input.');
+        //if (code === 'DE') setError('Email already registered.');
+        if (code !== 'SU') return;
+
+        alert('Sign up completed! Please log in.');
+        setView('sign-in');
+      });
+    };
+
+    return (
+      <div className='auth-card'>
+        <div className='auth-card-box'>
+          <div className='auth-card-top'>
+            <div className='auth-card-title-box'>
+              <div className='auth-card-title'>{'Sign Up'}</div>
+              <div className='auth-card-page'>{page === 1 ? '1/2' : '2/2'}</div>
+            </div>
+
+            {page === 1 && (
+              <>
+                <InputBox type='text' label='Email' placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} error={false} />
+                <InputBox type='password' label='Password' placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} error={false} />
+                <InputBox type='password' label='Confirm Password' placeholder='Re-enter your password' value={passwordCheck} onChange={(e) => setPasswordCheck(e.target.value)} error={false} />
+                <InputBox type='text' label='Nickname' placeholder='Enter your nickname' value={nickname} onChange={(e) => setNickname(e.target.value)} error={false} />
+              </>
+            )}
+
+            {page === 2 && (
+              <>
+                <InputBox type='text' label='Phone Number' placeholder='Enter your phone number' value={telNumber} onChange={(e) => setTelNumber(e.target.value)} error={false} />
+                <InputBox type='text' label='Address' placeholder='Enter your address' value={address} onChange={(e) => setAddress(e.target.value)} error={false} />
+                <InputBox type='text' label='Address Detail' placeholder='Enter detail (optional)' value={addressDetail} onChange={(e) => setAddressDetail(e.target.value)} error={false} />
+
+                <div className='auth-checkbox'>
+                  <input
+                    id='agree-personal'
+                    type='checkbox'
+                    checked={agreedPersonal}
+                    onChange={(e) => setAgreedPersonal(e.target.checked)}
+                  />
+                  <label htmlFor='agree-personal'>{'I agree to the personal information policy.'}</label>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className='auth-card-bottom'>
+            {error && (
+              <div className='auth-sign-in-error-box'>
+                <div className='auth-sign-in-error-message'>{error}</div>
+              </div>
+            )}
+
+            {page === 1 && <div className='black-large-full-button' onClick={onNextButtonClick}>{'Next'}</div>}
+            {page === 2 && (
+              <div className='auth-sign-up-button-box'>
+                <div className='white-large-half-button' onClick={onBackButtonClick}>{'Back'}</div>
+                <div className='black-large-half-button' onClick={onSignUpButtonClick}>{'Sign Up'}</div>
+              </div>
+            )}
+
+            <div className='auth-description-box'>
+              <div className='auth-description'>
+                {'Do you have an account? '}
+                <span className='auth-description-link' onClick={() => setView('sign-in')}>
+                  {'Sign in here'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
     return (
     <div id='auth-wrapper'>
