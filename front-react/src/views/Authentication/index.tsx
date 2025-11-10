@@ -187,7 +187,7 @@ export default function Authentication() {
         const { code } = responseBody;
         if (code === 'DBE') alert('DB Error');
         if (code === 'VF') setError('Invalid input.');
-        //if (code === 'DE') setError('Email already registered.');
+        if (code === 'DF') setError('Email already registered.');
         if (code !== 'SU') return;
 
         alert('Sign up completed! Please log in.');
@@ -209,12 +209,13 @@ export default function Authentication() {
                 <InputBox type='text' label='Email' placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} error={false} />
                 <InputBox type='password' label='Password' placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} error={false} />
                 <InputBox type='password' label='Confirm Password' placeholder='Re-enter your password' value={passwordCheck} onChange={(e) => setPasswordCheck(e.target.value)} error={false} />
-                <InputBox type='text' label='Nickname' placeholder='Enter your nickname' value={nickname} onChange={(e) => setNickname(e.target.value)} error={false} />
+                
               </>
             )}
 
             {page === 2 && (
               <>
+                <InputBox type='text' label='Nickname' placeholder='Enter your nickname' value={nickname} onChange={(e) => setNickname(e.target.value)} error={false} />
                 <InputBox type='text' label='Phone Number' placeholder='Enter your phone number' value={telNumber} onChange={(e) => setTelNumber(e.target.value)} error={false} />
                 <InputBox type='text' label='Address' placeholder='Enter your address' value={address} onChange={(e) => setAddress(e.target.value)} error={false} />
                 <InputBox type='text' label='Address Detail' placeholder='Enter detail (optional)' value={addressDetail} onChange={(e) => setAddressDetail(e.target.value)} error={false} />
@@ -226,8 +227,12 @@ export default function Authentication() {
                     checked={agreedPersonal}
                     onChange={(e) => setAgreedPersonal(e.target.checked)}
                   />
-                  <label htmlFor='agree-personal'>{'I agree to the personal information policy.'}</label>
+                  <label htmlFor='agree-personal'>{'Agree to policy'}</label>
+                  <div className='more-link' >
+                    {'See more'} {/* or 'See more' */}
+                  </div>
                 </div>
+                
               </>
             )}
           </div>
@@ -242,8 +247,8 @@ export default function Authentication() {
             {page === 1 && <div className='black-large-full-button' onClick={onNextButtonClick}>{'Next'}</div>}
             {page === 2 && (
               <div className='auth-sign-up-button-box'>
-                <div className='white-large-half-button' onClick={onBackButtonClick}>{'Back'}</div>
-                <div className='black-large-half-button' onClick={onSignUpButtonClick}>{'Sign Up'}</div>
+                <div className='black-small-full-button' onClick={onBackButtonClick}>{'Back'}</div>
+                <div className='black-small-full-button' onClick={onSignUpButtonClick}>{'Sign Up'}</div>
               </div>
             )}
 
