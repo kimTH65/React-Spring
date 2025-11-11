@@ -7,7 +7,7 @@ public interface ResponseCode {
 
     //400
     String VALIDATION_FAILED = "VF";
-    String DUPLICATE_EMAIL = "DF";
+    String DUPLICATE_EMAIL = "DE";
     String DUPLICATE_NICKNAME = "DN";
     String DUPLICATE_TEL_NUMBUR = "DT";
     String NOT_EXISTED_USER = "NU";

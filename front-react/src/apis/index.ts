@@ -27,18 +27,16 @@ export const signInRequest = async(requestBody: SignInRequestDto) => {
 };
 
 export const signUpRequest = async(requestBody: SignUpRequestDto) => {
-    const response = await axios
+    const result = await axios
         .post(SIGN_UP_URL(), requestBody)
         .then(response =>{
-            const responseBody : SignInResponseDto = response.data;
+            const responseBody : SignUpResponseDto = response.data;
             return responseBody;
         })
         .catch(error => {
             if (!error.response.data) return null;
-
             const responseBody: ResponseDto = error.response.data;
-            return error.response.data as SignUpResponseDto;
+            return responseBody;
         })
-
-    return response;
+    return result;
 };

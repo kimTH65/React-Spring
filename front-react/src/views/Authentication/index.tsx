@@ -187,7 +187,7 @@ export default function Authentication() {
         const { code } = responseBody;
         if (code === 'DBE') alert('DB Error');
         if (code === 'VF') setError('Invalid input.');
-        if (code === 'DF') setError('Email already registered.');
+        if (code === 'DE') setError('Email already registered.');
         if (code !== 'SU') return;
 
         alert('Sign up completed! Please log in.');

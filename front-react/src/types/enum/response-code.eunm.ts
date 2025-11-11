@@ -4,7 +4,7 @@ enum ResponseCode {
 
         //400
         VALIDATION_FAILED = "VF",
-        DUPLICATE_EMAIL = "DF",
+        DUPLICATE_EMAIL = "DE",
         DUPLICATE_NICKNAME = "DN",
         DUPLICATE_TEL_NUMBUR = "DT",
         NOT_EXISTED_USER = "NU",
